@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Assignment 1}
+\author{Piotr, Victor \& Nick}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Question 1}
+vnvnmvnm gkjg jkg kjghg 
+\subsection{1st Subsection}
+More stuff!
+
+\subsection{Find the marginal distribution $p(x_a|b_a)$ in which $x_c$ has been marginalized out}
+
+We use formulas (2.97)
+%\begin{equation}
+\[
+\mu_{aõb}=\mu_a-\Lambda_{aa}^{-1}\Lambda_{ab}(x_b-\mu_b) %\Leftrightarrow
+\]
+%\end{equation}
+and equations (2.79)
+%\begin{equation}
+\[
+\Lambda_{aa}=(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})^{-1}
+\]
+%\end{equation}
+and (2.80)
+\[
+\Lambda_{ab}=-(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})^{-1}\Sigma_{ab}\Sigma_{bb}^{-1}
+\]
+insertion gives
+\[
+\mu_{aõb}=\mu_a-(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})(-(\Sigma_{aa}-\Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba})^{-1}\Sigma_{ab}\Sigma_{bb}^{-1})(x_b-\mu_b)
+\]
+\[
+\Leftrightarrow \mu_{aõb}=\mu_a+\Sigma_{ab}\Sigma_{bb}^{-1}(x_b-\mu_b)
+\]
+\[mu_{a|b}
+\]
+
+\end{document}  

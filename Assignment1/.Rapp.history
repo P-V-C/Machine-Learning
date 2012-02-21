@@ -1,0 +1,90 @@
+head(prostate)
+?scale
+?optimize
+y<-rnorm(1000)#
+x<-matrix(rnorm(1000*100),1000,100)
+x
+?repilcate
+?replicate
+y<-rnorm(1000)#
+x<-matrix(rnorm(1000*100),1000,100)
+x
+?lda
+install.package('lda')
+install.packages('lda')
+require(lda)
+?lda
+require(mass)
+install.packages('MASS')
+require('MASS')
+?MASS
+?mass
+vowels
+vowels<-read.table("http://www-stat-class.stanford.edu/%7Etibs/ElemStatLearn/datasets/vowel.train",row.names=1,head=TRUE,sep=",")
+class(vowels)
+vowelsLda<-lda(y~.,data=vowels)
+class(vowelsLda)
+names(vowelsLda)
+tmp<-vowels[1:5,]
+tmp
+head(vowels)
+predict(vowelsLda,newdata=tmp)
+?pmax
+?visU
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+require(pixmap)#
+kande1 = read.pnm("./images/kande1.pnm")#
+# pixel specifications:#
+tll = c(150, 328)  # training: lower left#
+tur = c(330, 264)  # training: upper right#
+#
+## Show image and regions
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+train.set = kande1[tur[2]:tll[2], tll[1]:tur[1]]#
+train = NULL#
+train$red = as.vector(getChannels(train.set,"red"))#
+train$green = as.vector(getChannels(train.set,"green"))#
+train$blue = as.vector(getChannels(train.set,"blue"))#
+train = as.data.frame(train)#
+means<-c(mean(train$red),mean(train$green),mean(train$blue))#
+rownames(means)<-c("red","green","blue")#
+N<-nrow(train)#
+#
+sigML<- (1/N)*as.matrix(t(train)-means)%*%t((as.matrix(t(train)-means))) # calculate covar#
+norm3d <-function(x, mu, sigma){#
+  a<-(1/((2*pi)^(3/2)))*(1/sqrt(det(sigma)))  #
+  b<-exp(  -.5*(t(x-mu)) %*% (solve(sigma) %*% (x-mu) ) )#
+  return(a*b)#
+}#
+RGB = getChannels(kande1)#
+norm3d(c(0.95,0,0),means,sigML)
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+prob<-apply(RGB,c(1,2),norm3d,means,sigML)
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+prob_vector <- as.vector(prob)#
+rowIndex<-as.vector(replicate(480,seq(1,640)))#
+colIndex<-as.vector(sapply(seq(1,480),replicate,n=640))#
+frame<-data.frame(rowIndex,colIndex,prob_vector) #length(frame)==640*480*3==length(rowIndex)*3 ; first third represents red pixels, second third green pixels, and third third represents blue pixels#
+Z=sum(prob_vector)
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+q_hat_r<-1/Z * sum(  frame$prob_vector * frame$rowIndex  )#
+q_hat_c<-1/Z * sum(  frame$prob_vector * frame$colIndex  )
+frame$rowIndex
+tail(rowIndex)
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+plot(pixmapGrey(prob))
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+points(q_hat_c,q_hat_r,col="red")
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+points(q_hat_r,q_hat_c,col="red")
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+points(q_hat_c,q_hat_r,col="red")
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+plot(pixmapGrey(prob))
+setwd('/Users/veewhy/Dropbox/StatsML/Assignment1')
+png('centerOfMass.png')#
+plot(pixmapGrey(prob))#
+points(q_hat_c,q_hat_r,col="red")#
+dev.off()
+?sad
+?mad
