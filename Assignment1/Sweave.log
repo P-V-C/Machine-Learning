@@ -1,22 +1,10 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  22 FEB 2012 13:07
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  22 FEB 2012 13:42
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**Sweave.tex
-(./Sweave.tex
-LaTeX2e <2009/09/24>
-Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, ge
-rman-x-2009-06-19, ngerman-x-2009-06-19, afrikaans, ancientgreek, ibycus, arabi
-c, armenian, basque, bulgarian, catalan, pinyin, coptic, croatian, czech, danis
-h, dutch, ukenglish, usenglishmax, esperanto, estonian, ethiopic, farsi, finnis
-h, french, galician, german, ngerman, swissgerman, monogreek, greek, hungarian,
- icelandic, assamese, bengali, gujarati, hindi, kannada, malayalam, marathi, or
-iya, panjabi, tamil, telugu, indonesian, interlingua, irish, italian, kurmanji,
- lao, latin, latvian, lithuanian, mongolian, mongolianlmc, bokmal, nynorsk, pol
-ish, portuguese, romanian, russian, sanskrit, serbian, serbianc, slovak, sloven
-ian, spanish, swedish, turkish, turkmen, ukrainian, uppersorbian, welsh, loaded
-.
+**\nonstopmode \input /Users/veewhy/Projects/StatML/Assignment1/Sweave.tex
+(/Users/veewhy/Projects/StatML/Assignment1/Sweave.tex
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/size10.clo
@@ -648,7 +636,7 @@ File: pgfmodulematrix.code.tex 2010/08/24  (rcs-revision 1.4)
 s/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
 )))
-(/Users/veewhy/Library/texmf/tex/latex/Sweave/tex/latex/Sweave.sty
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/Sweave.sty
 Package: Sweave 
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ifthen.sty
@@ -666,7 +654,7 @@ Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix
 \FV@StepNumber=\count136
 \FV@OutFile=\write4
 )
-(/Users/veewhy/Library/texmf/tex/latex/Sweave/tex/latex/upquote.sty
+(/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/upquote.sty
 Package: upquote 2003/08/11 v1.1 Covington's upright-quote modification to verb
 atim and verb
 
@@ -910,18 +898,18 @@ Package rerunfilecheck Info: File `Sweave.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 72.
  ) 
 Here is how much of TeX's memory you used:
- 16562 strings out of 493633
- 285350 string characters out of 3143378
+ 16563 strings out of 493633
+ 285519 string characters out of 3143378
  352473 words of memory out of 3000000
  19507 multiletter control sequences out of 15000+200000
  10402 words of font info for 37 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
- 56i,5n,55p,415b,489s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 56i,5n,55p,477b,489s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 ></usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
 /usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb>
 </usr/local/texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Sweave.pdf (3 pages, 104582 bytes).
+Output written on Sweave.pdf (3 pages, 104220 bytes).
 PDF statistics:
  55 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream
