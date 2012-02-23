@@ -24,12 +24,11 @@ cols2test <- as.matrix(cols2test)
 cols2train <- train[c("abdomen")]
 cols2train <- as.matix(cols2train)
 
-targettest <- test[c("pctbodyfat")]
-targettest <- as.matrix(targettest)
+targettrain <- train[c("pctbodyfat")]
+targettrain <- as.matrix(targettrain)
   
-cols1test <- as.matrix(cols1test)
-cols1testwithone <- cbind(seq(1,1,length.out=length(cols1test)), cols1test)
+cols1train <- as.matrix(cols1train)
+cols1trainwithone <- cbind(seq(1,1,length.out=length(cols1train)), cols1train)
 
-y <-solve(t(cols1testwithone)%*%cols1testwithone)%*%t(cols1testwithone)%*%targettest
-a <- solve(t(cols1testwithone)%*%cols1testwithone)
-b <- t(cols1testwithone)%*%target 
+## calculate the weights with identity basis function using function (3.15)
+y <-solve(t(cols1trainwithone)%*%cols1trainwithone)%*%t(cols1trainwithone)%*%targettrain
