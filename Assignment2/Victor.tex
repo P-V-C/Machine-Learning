@@ -1,0 +1,117 @@
+\documentclass[nogin, 10pt]{article}
+\usepackage{natbib}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[colorlinks = true]{hyperref}
+\usepackage{bbm, amssymb, amsmath, amsthm}
+\usepackage[T1]{fontenc} 
+\usepackage{aeguill, fancyhdr, latexsym, mathrsfs, verbatim, colortbl}
+\usepackage[a4paper,
+            inner=30mm,
+            outer=40mm,
+            top=40mm,
+            bottom=40mm,
+            marginparwidth=30mm,
+            marginparsep=5mm]{geometry}
+\usepackage{tikz}
+\usepackage{Sweave}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.3ex}
+
+\begin{document}
+\section{Regression}
+\subsection{Maximum Likelihood Solution}
+First we load the dataset, give it reasonable column names, and split it up into a training and a testing subset.
+\begin{Schunk}
+\begin{Sinput}
+> setwd('~/github/StatML/Assignment2')
+> load('./Data/bodyfat.RData')
+> require(MASS)
+> colnames(data)<-c('density','bodyFatPercentage','Age','Weight',
++                   'Height','Neck','Chest','Abdomen','Hip','Thigh',
++                   'Knee','Ankle','Biceps','Forearm','Wrist')
+> ridx <- sample( 1:dim( data )[1], dim( data )[1] )
+> trainIdx<-ridx[1:200]
+> testIdx<-ridx[201:length( ridx )]
+> train <- data[trainIdx,]
+> test <- data[testIdx,]
+\end{Sinput}
+\end{Schunk}
+We attempt to predict body fat using two models. The first one is based on weight, and chest, abdomen, and hip circumferences, and the second is based solely on abdominal circumference.
+\begin{Schunk}
+\begin{Sinput}
+> selection1Train<-train[,c(4,7,8,9)]
+> selection2Train<-train[,8]
+> selection1Test<-test[,c(4,7,8,9)]
+> selection2Test<-test[,8]
+> targetTrain<-train[,2]
+> targetTest<-test[,2]
+\end{Sinput}
+\end{Schunk}
+We make a design matrix for every selection, and then find $\bf{w}_{\text{ML}}$ by $\bf{w}_{\text{ML}}=(\bf{\Phi}^{\text{T}}\bf{\Phi})^{-1}\bf{\Phi}^{\text{T}}\bf{t}$ where $(\bf{\Phi}^{\text{T}}\bf{\Phi})^{-1}\bf{\Phi}^{\text{T}}$ is the pseudo-inverse of $\bf{\Phi}$.
+\begin{Schunk}
+\begin{Sinput}
+> design1Train<-as.matrix(cbind(seq(1,1,length.out=nrow(selection1Train)),
++                          selection1Train))
+> design2Train<-as.matrix(cbind(seq(1,1,length.out=length(selection2Train)),
++                          selection2Train))
+> wML1<-ginv(design1Train)%*%targetTrain
+> wML2<-ginv(design2Train)%*%targetTrain
+\end{Sinput}
+\end{Schunk}
+Once e have found $\bf{w}_{ML}$ we can apply it to the test set, via $y(\bf{x},\bf{w})=\bf{w}^{\bf{T}}\phi(\bf{x})$, and we can calculate the RMS via \[
+\text{RMS}=\sqrt{\frac{1}{N}=\sum^N_{n=1}{(t_n-y(\bf{x}_n,\bf{w}))^2}}
+\]
+
+\begin{Schunk}
+\begin{Sinput}
+> design1Test<-as.matrix(cbind(seq(1,1,length.out=nrow(selection1Test)),
++                          selection1Test))
+> design2Test<-as.matrix(cbind(seq(1,1,length.out=length(selection2Test)),
++                          selection2Test))
+> y1<-t(wML1)%*%t(design1Test)
+> y2<-t(wML2)%*%t(design2Test)
+> RMS1<-sqrt(sum((targetTest-y1)^2)/length(targetTest))
+> RMS2<-sqrt(sum((targetTest-y2)^2)/length(targetTest))
+> print(RMS1)
+\end{Sinput}
+\begin{Soutput}
+[1] 4.535804
+\end{Soutput}
+\begin{Sinput}
+> print(RMS2)
+\end{Sinput}
+\begin{Soutput}
+[1] 5.182109
+\end{Soutput}
+\end{Schunk}
+Thus we get an RMS of 4.07 using the first model, and an RMS of 4.4 for the second model, showing the first model providing more accurate predictions. 
+
+For posterity, we will also calculate the error on the training set.
+\begin{Schunk}
+\begin{Sinput}
+> y1Train<-t(wML1)%*%t(design1Train)
+> y2Train<-t(wML2)%*%t(design2Train)
+> RMS1Train<-sqrt(sum((targetTrain-y1Train)^2)/length(targetTrain))
+> RMS2Train<-sqrt(sum((targetTrain-y2Train)^2)/length(targetTrain))
+> print(RMS1Train)
+\end{Sinput}
+\begin{Soutput}
+[1] 4.42236
+\end{Soutput}
+\begin{Sinput}
+> print(RMS2Train)
+\end{Sinput}
+\begin{Soutput}
+[1] 4.788878
+\end{Soutput}
+\end{Schunk}
+\subsection{Maximum a posteriori Solution}
+
+
+\end{document}
+
+
+
