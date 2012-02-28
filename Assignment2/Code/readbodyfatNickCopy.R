@@ -53,7 +53,8 @@ pred<- cols1testwithone%*%y
 
 ##calculate RMS for first specification - 3.05
 #RMS <- sqrt((1/length(pred)*(sum(pred-targettest))^2))
-RMS <- sqrt((1/length(pred)*(sum(targettest-pred))^2))
+#RMS <- sqrt((1/length(pred)*(sum(targettest-pred))^2))
+RMS <- sqrt(1/length(pred)*sum((targettest-pred)^2))
 
 ## Deternime RMS for second procedure
 y2 <-ginv(t(cols2trainwithone)%*%cols2trainwithone)%*%t(cols2trainwithone)%*%targettrain2
@@ -66,19 +67,37 @@ pred2<- cols2testwithone%*%y2
 
 ##calculate RMS for first specification - 2.59
 #RMS2 <- sqrt((1/length(pred2)*(sum(pred2-targettest2))^2))
-RMS2 <- sqrt((1/length(pred2)*(sum(targettest2-pred2))^2))
+#RMS2 <- sqrt((1/length(pred2)*(sum(targettest2-pred2))^2))
+RMS2 <- sqrt(1/length(pred2)*sum((targettest2-pred2)^2))
 
 ## Question 1.2
 # Calculate covariance matrix for test dataset from 1st model using eq. (3.54) for given alpha value
+beta <- 1
 I <- diag(5)    # Create identity matrix
-alpha <- 1.1    #Guess value for alpha
+alpha <- 3    #Guess value for alpha
 
 #Calculate inverse of covariance matrix, equation (3.54)
 S_N_inv <- alpha*I+ginv(t(cols1trainwithone)%*%cols1trainwithone)
 m_N <- ginv(S_N_inv)%*%t(cols1trainwithone)%*%targettrain      #Calculate mean, equation (3.53)
 
-Y<- ginv(alpha*diag(5)+t(cols1trainwithone)%*%cols1trainwithone)%*%t(cols1trainwithone)%*%targettrain
+#Use (3.31) to calculate predictions
+y3 <- m_N%*cols1trainwithone
 
-#pred <- cols1trainwithone%*%m_N         ##calculate prediction values
-pred <- cols1trainwithone%*%Y         ##calculate prediction values
-RMS <- sqrt((1/length(pred)*(sum(targettrain-pred))^2))     #calculate RMS
+# #Calculate covariance matrix for test dataset from 1st model using eq. (3.54) for given alpha value
+# I <- diag(5)    # Create identity matrix
+# alpha <- 10    #Guess value for alpha
+# 
+# #Calculate inverse of covariance matrix, equation (3.54)
+# S_N_inv <- alpha*I+ginv(t(cols1trainwithone)%*%cols1trainwithone)
+# m_N <- beta*ginv(S_N_inv)%*%t(cols1trainwithone)%*%targettrain      #Calculate mean, equation (3.53)
+# 
+# # Expression below for Y is incorrect
+# Y<- ginv(alpha*diag(5)+t(cols1trainwithone)%*%cols1trainwithone)%*%t(cols1trainwithone)%*%targettrain
+# 
+# y <-ginv(t(cols1trainwithone)%*%cols1trainwithone)%*%t(cols1trainwithone)%*%targettrain
+# 
+# Y<- ginv(t(m_N)%*%m_N)%*%t(m_N)##%*%targettrain
+# 
+# #pred <- cols1trainwithone%*%m_N         ##calculate prediction values
+# pred3 <- cols1trainwithone%*%Y         ##calculate prediction values
+# RMS3 <- sqrt(1/length(pred3)*sum((targettrain-pred3)^2))     #calculate RMS
