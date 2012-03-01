@@ -24,7 +24,8 @@
 \section{Regression}
 \subsection{Maximum Likelihood Solution}
 First we load the dataset, give it reasonable column names, and split it up into a training and a testing subset.
-<<load>>=
+<<initialize>>=
+rm(list=ls())
 setwd('~/github/StatML/Assignment2')
 load('./Data/bodyfat.RData')
 require(MASS)
@@ -84,8 +85,34 @@ print(RMS2Train)
 For posterity, we have also calculated the error on the training set. For the two models, we get RMS of 4.52, and 4.81. The fact that the using the train error is not smaller than the test error, likely points to the fact that we are not over-fitting.
 
 \subsection{Maximum a posteriori Solution}
+In order to evaluat how different values of $\alpha$ influence our prediction, we vary $\alpha$ from 0.1 to 10. We keep $\beta=1$. constant
+<<posterior>>=
+Sn<-function(alpha,beta=1,Phi){
+  tmp<-beta*t(Phi)%*%Phi
+  return(alpha*diag(ncol(tmp))+tmp) 
+}
+Mn<-function(beta=1,Sn,Phi,t){
+  beta*Sn%*%t(Phi)%*%t
+}
+Sn3<-Sn(0.5,Phi=design1Train)
+Mn3<-Mn(Sn=Sn3,Phi=design1Train,t=targetTrain)
 
-
+yMAP<-t(Mn3)%*%t(design1Test)
+RMS.MAP<-sqrt(sum((targetTest-yMAP)^2)/length(targetTest))
+@
+\section{Linear Discriminant Analysis}
+We load the data KnollA, KnollB, and KnollC.
+<<loadKnoll>>=
+KA.test<-read.table('./Data/KnollA-test.dt')
+KA.train<-read.table('./Data/KnollA-train.dt')
+KB.test<-read.table('./Data/KnollB-test.dt')
+KB.train<-read.table('./Data/KnollB-train.dt')
+KC.test<-read.table('./Data/KnollC-test.dt')
+KC.train<-read.table('./Data/KnollC-train.dt')
+qplot(KA.train$V1,KA.train$V2,color=as.factor(KA.train$V3))
+qplot(KB.train$V1,KB.train$V2,color=as.factor(KA.train$V3))
+qplot(KC.train$V1,KC.train$V2,color=as.factor(KA.train$V3))
+@
 \end{document}
 
 
