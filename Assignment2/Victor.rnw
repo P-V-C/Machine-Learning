@@ -120,6 +120,9 @@ print(qplot(KC.train$V1,KC.train$V2,color=as.factor(KC.train$V3)))
 @
 Some random built-in R functions.
 <<>>=
+require(MASS)
+require(klaR)
+covarA<-cov(cbind(KA.train$V1,KA.train$V2)) #covar for A. 
 ldaa<-lda(as.factor(V3) ~ ., data = KA.train)
 predA<-which(predict(ldaa,KA.test)$posterior[,2]>0.5) #indices where class==1
 sum(KA.test$V3[predA]==1)/length(which(KA.test$V3==1)) #accuracy=98%
@@ -133,9 +136,33 @@ partimat(as.factor(V3)~.,data=KB.train,method="lda")
 ldac<-lda(as.factor(V3) ~ ., data = KC.train)
 predC<-which(predict(ldac,KC.test)$posterior[,2]>0.5) #indices where class==1
 sum(KC.test$V3[predC]==1)/length(which(KC.test$V3==1)) #accuracy=98%
+sum(KC.test$V3[predC]==-1)/length(which(KC.test$V3==1)) #accuracy=98%
 partimat(as.factor(V3)~.,data=KC.train,method="lda")
 @
-
+Fucking K-nearest neighbour. Implementing this seems easy enough: http://www.lkozma.net/knn2.pdf
+<<KNN>>=
+knn<-function(metric,data,input,neighbors){
+  
+  if (metric=='euclidian'){
+    distance<-function(x,y){
+      return(sqrt(x^2+y^2))
+    }
+  }
+  
+  if (metric=='alternative'){
+    distance<-function(x,y){
+      M=matrix(c(100,0,0,1),2,2)
+      return(norm(M*x-M*y)) #f'real?
+    }
+  }
+  
+  k<-0
+  while (k < neighbors) {
+    #ties broken at random?
+    
+  }
+}
+@
 
 \end{document}
 
