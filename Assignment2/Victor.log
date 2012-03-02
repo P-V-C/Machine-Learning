@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  28 FEB 2012 16:39
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2011) (format=pdflatex 2011.7.3)  2 MAR 2012 12:41
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -844,57 +844,67 @@ LaTeX Font Info:    Try loading font information for T1+aett on input line 28.
 (/usr/local/texlive/2011/texmf-dist/tex/latex/ae/t1aett.fd
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
 )
-LaTeX Font Info:    Try loading font information for TS1+aett on input line 29.
+LaTeX Font Info:    Try loading font information for TS1+aett on input line 30.
 
 
 (/Library/Frameworks/R.framework/Resources/share/texmf/tex/latex/ts1aett.fd
 File: ts1aett.fd 
 )
-LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 29.
+LaTeX Font Info:    Try loading font information for TS1+cmtt on input line 30.
 
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ts1cmtt.fd
 File: ts1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `TS1/aett/m/sl' in size <10> not available
-(Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 29.
-LaTeX Font Info:    Try loading font information for U+msa on input line 53.
+(Font)              Font shape `TS1/cmtt/m/sl' tried instead on input line 30.
+LaTeX Font Info:    Try loading font information for U+msa on input line 54.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 53.
+LaTeX Font Info:    Try loading font information for U+msb on input line 54.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
-LaTeX Font Info:    Try loading font information for U+lasy on input line 53.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 54.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Try loading font information for U+rsfs on input line 53.
+LaTeX Font Info:    Try loading font information for U+rsfs on input line 54.
 
 (/usr/local/texlive/2011/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 ) [1
 
-{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 114.
- [2]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 114.
+{/usr/local/texlive/2011/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+<Victor-loadKnoll.pdf, id=45, 433.62pt x 433.62pt>
+File: Victor-loadKnoll.pdf Graphic file (type pdf)
+ <use Victor-loadKnoll.pdf>
+Package pdftex.def Info: Victor-loadKnoll.pdf used on input line 150.
+(pdftex.def)             Requested size: 433.61894pt x 433.61894pt.
+
+Overfull \hbox (35.28035pt too wide) in paragraph at lines 150--151
+[] 
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 153.
+[3] [4 <./Victor-loadKnoll.pdf>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 153.
  (./Victor.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 114.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 114.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 153.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 153.
 Package rerunfilecheck Info: File `Victor.out' has not changed.
-(rerunfilecheck)             Checksum: B9175A8DC0BF0C30A7B0561702281935;199.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 114.
+(rerunfilecheck)             Checksum: 789863A3E0FF5414BB56C6257DBF71CB;262.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 153.
  ) 
 Here is how much of TeX's memory you used:
- 16613 strings out of 493633
- 286415 string characters out of 3143378
+ 16623 strings out of 493633
+ 286570 string characters out of 3143378
  357481 words of memory out of 3000000
- 19531 multiletter control sequences out of 15000+200000
+ 19536 multiletter control sequences out of 15000+200000
  24559 words of font info for 59 fonts, out of 3000000 for 9000
  831 hyphenation exceptions out of 8191
  56i,5n,55p,480b,487s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -912,10 +922,10 @@ texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/local
 texlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/te
 xlive/2011/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/tex
 live/2011/texmf-dist/fonts/type1/public/cm-super/sfst1000.pfb>
-Output written on Victor.pdf (2 pages, 125016 bytes).
+Output written on Victor.pdf (4 pages, 154641 bytes).
 PDF statistics:
- 86 PDF objects out of 1000 (max. 8388607)
- 68 compressed objects within 1 object stream
- 6 named destinations out of 1000 (max. 500000)
- 37 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 108 PDF objects out of 1000 (max. 8388607)
+ 86 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
+ 50 words of extra memory for PDF output out of 10000 (max. 10000000)
 

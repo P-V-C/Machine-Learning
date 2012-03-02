@@ -26,6 +26,7 @@
 First we load the dataset, give it reasonable column names, and split it up into a training and a testing subset.
 \begin{Schunk}
 \begin{Sinput}
+> rm(list=ls())
 > setwd('~/github/StatML/Assignment2')
 > load('./Data/bodyfat.RData')
 > require(MASS)
@@ -78,18 +79,17 @@ Once e have found $\bf{w}_{ML}$ we can apply it to the test set, via $y(\bf{x},\
 > print(RMS1)
 \end{Sinput}
 \begin{Soutput}
-[1] 4.535804
+[1] 5.105047
 \end{Soutput}
 \begin{Sinput}
 > print(RMS2)
 \end{Sinput}
 \begin{Soutput}
-[1] 5.182109
+[1] 5.245014
 \end{Soutput}
 \end{Schunk}
 Thus we get an RMS of 4.07 using the first model, and an RMS of 4.4 for the second model, showing the first model providing more accurate predictions. 
 
-For posterity, we will also calculate the error on the training set.
 \begin{Schunk}
 \begin{Sinput}
 > y1Train<-t(wML1)%*%t(design1Train)
@@ -99,16 +99,55 @@ For posterity, we will also calculate the error on the training set.
 > print(RMS1Train)
 \end{Sinput}
 \begin{Soutput}
-[1] 4.42236
+[1] 4.257557
 \end{Soutput}
 \begin{Sinput}
 > print(RMS2Train)
 \end{Sinput}
 \begin{Soutput}
-[1] 4.788878
+[1] 4.773962
 \end{Soutput}
 \end{Schunk}
+For posterity, we have also calculated the error on the training set. For the two models, we get RMS of 4.52, and 4.81. The fact that the using the train error is not smaller than the test error, likely points to the fact that we are not over-fitting.
+
 \subsection{Maximum a posteriori Solution}
+In order to evaluat how different values of $\alpha$ influence our prediction, we vary $\alpha$ from 0.1 to 10. We keep $\beta=1$. constant
+\begin{Schunk}
+\begin{Sinput}
+> Sn<-function(alpha,beta=1,Phi){
++   tmp<-beta*t(Phi)%*%Phi
++   return(alpha*diag(ncol(tmp))+tmp) 
++ }
+> Mn<-function(beta=1,Sn,Phi,t){
++   beta*Sn%*%t(Phi)%*%t
++ }
+> Sn3<-Sn(0.5,Phi=design1Train)
+> Mn3<-Mn(Sn=Sn3,Phi=design1Train,t=targetTrain)
+> yMAP<-t(Mn3)%*%t(design1Test)
+> RMS.MAP<-function(targetTest=targetTest,yMAP=yMAP){sqrt(sum((targetTest-yMAP)^2)/length(targetTest))}
+\end{Sinput}
+\end{Schunk}
+\section{Linear Discriminant Analysis}
+We load the data KnollA, KnollB, and KnollC, and create 2-dimensional plots, while coloring by index. KnollA and KnollC
+\begin{Schunk}
+\begin{Sinput}
+> KA.test<-read.table('./Data/KnollA-test.dt')
+> KA.train<-read.table('./Data/KnollA-train.dt')
+> KB.test<-read.table('./Data/KnollB-test.dt')
+> KB.train<-read.table('./Data/KnollB-train.dt')
+> KC.test<-read.table('./Data/KnollC-test.dt')
+> KC.train<-read.table('./Data/KnollC-train.dt')
+> require(ggplot2)
+> par(mfrow=c(1,3))
+> print(qplot(KA.train$V1,KA.train$V2,color=as.factor(KA.train$V3)))
+> print(qplot(KB.train$V1,KB.train$V2,color=as.factor(KB.train$V3)))
+> print(qplot(KC.train$V1,KC.train$V2,color=as.factor(KC.train$V3)))
+> #KA.train and KC.train are very similar;
+> # KA.train$V1-KC.train$V1*100 = 0
+> # KA.train$V2-KC.train$V2 = 0
+\end{Sinput}
+\end{Schunk}
+\includegraphics{Victor-loadKnoll}
 
 
 \end{document}
