@@ -43,7 +43,7 @@ w_ML1 <- ginv(train1)%*%t_train1
 pred1 <- test1%*%w_ML1
 
 ##calculate RMS for first specification
-RMS1 <- sqrt(1/length(pred1)*sum((t_test-pred1)^2))
+RMS1_ML <- sqrt(1/length(pred1)*sum((t_test-pred1)^2))
 
 ## Deternime RMS for second procedure
 #w_ML2 <-ginv(t(train2)%*%train2)%*%t(train2)%*%t_train2
@@ -53,7 +53,7 @@ w_ML2 <- ginv(train2)%*%t_train2
 pred2<- test2%*%w_ML2
 
 ##calculate RMS for first specification
-RMS2 <- sqrt(1/length(pred2)*sum((t_test-pred2)^2))
+RMS2_ML <- sqrt(1/length(pred2)*sum((t_test-pred2)^2))
 
 ##################
 ## Question 1.2 ##
@@ -70,15 +70,15 @@ RMS <- function(j, phitrain = train1, phitest=test1, targettrain=t_train1, targe
   return (sqrt(1/length(pred3)*sum((t(targettest)-pred3)^2)))     #calculate RMS alpha=0.5, RMS 4.51
 }
 list1 <- sapply(alpha, RMS)
-plot(alpha,list1,type="line", ylab="RMS")  #plot alpha vs. RMS
+plot(alpha,list1,type="line", ylab="RMS", main="Model 1: 5 dimensional pfi")  #plot alpha vs. RMS
 df<-data.frame(cbind(list1,alpha))
 df1<-rev(df[order(df$list1),]) #find lowest alpha value
 alpha1 <- (df1[min(df1$list1),]$alpha)
-RMS1 <- (df1[min(df1$list1),]$list)
+RMS1_MAP <- (df1[min(df1$list1),]$list)
 
 list2 <- sapply(alpha, RMS, phitrain=train2, phitest=test2, targettrain=t_train2, targettest=t_test)
-plot(alpha,list2,type="line", ylab="RMS")  #plot alpha vs. RMS
+plot(alpha,list2,type="line", ylab="RMS", main = "Model 2: 2 dimensional pfi")  #plot alpha vs. RMS
 df<-data.frame(cbind(list2,alpha))
 df2<-rev(df[order(df$list2),]) #find lowest alpha value
 alpha2 <- (df2[min(df2$list2),]$alpha)
-RMS2 <- (df2[min(df2$list2),]$list)
+RMS2_MAP <- (df2[min(df2$list2),]$list)
