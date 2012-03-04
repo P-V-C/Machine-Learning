@@ -140,28 +140,46 @@ sum(KC.test$V3[predC]==-1)/length(which(KC.test$V3==1)) #accuracy=98%
 partimat(as.factor(V3)~.,data=KC.train,method="lda")
 @
 Fucking K-nearest neighbour. Implementing this seems easy enough: http://www.lkozma.net/knn2.pdf
+http://www.scholarpedia.org/article/K-nearest_neighbor
 <<KNN>>=
-knn<-function(metric,data,input,neighbors){
+knn<-function(metric,train,test,k){
   
   if (metric=='euclidian'){
     distance<-function(x,y){
-      return(sqrt(x^2+y^2))
+      return( sqrt((x[1]-y[1])^2+(x[2]-y[2])^2) )
     }
   }
   
   if (metric=='alternative'){
     distance<-function(x,y){
       M=matrix(c(100,0,0,1),2,2)
-      return(norm(M*x-M*y)) #f'real?
+      x<-as.vector(x)
+      y<-as.vector(c(y$V1,y$V2))
+      return(norm(M%*%x-M%*%y)) #f'real?
     }
   }
-  
-  k<-0
-  while (k < neighbors) {
-    #ties broken at random?
-    
+  trainMat<-as.matrix(cbind(train$V1,train$V2))
+  d<-vector()
+  class<-vector()
+  i=1
+  while(i<=nrow(trainMat)) {
+    d<-append(d,(distance(x=trainMat[i,],y=test[,c(1,2)])))
+    class<-append(class,train[i,]$V3)
+    i=i+1
   }
+  map<-data.frame(cbind(d,class))
+  map<-map[order(map$d),]
+  
+  if(sum(map$class[1:k])>0){
+    return(1)
+  }
+  else{
+    return(-1)
+  }
+  
 }
+knn(metric='euclidian',train=KA.train,test=KA.test[9,],k=3)
+knn(metric='alternative',train=KA.train,test=KA.test[9,],k=3)
 @
 
 \end{document}
