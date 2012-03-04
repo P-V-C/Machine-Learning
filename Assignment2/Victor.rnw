@@ -49,10 +49,8 @@ targetTest<-test[,2]
 @
 We make a design matrix for every selection, and then find $\bf{w}_{\text{ML}}$ by $\bf{w}_{\text{ML}}=(\bf{\Phi}^{\text{T}}\bf{\Phi})^{-1}\bf{\Phi}^{\text{T}}\bf{t}$ where $(\bf{\Phi}^{\text{T}}\bf{\Phi})^{-1}\bf{\Phi}^{\text{T}}$ is the pseudo-inverse of $\bf{\Phi}$.
 <<design>>=
-design1Train<-as.matrix(cbind(seq(1,1,length.out=nrow(selection1Train)),
-                         selection1Train))
-design2Train<-as.matrix(cbind(seq(1,1,length.out=length(selection2Train)),
-                         selection2Train))
+design1Train<-as.matrix(cbind(1,selection1Train))
+design2Train<-as.matrix(cbind(1,selection2Train))
 wML1<-ginv(design1Train)%*%targetTrain
 wML2<-ginv(design2Train)%*%targetTrain
 @
@@ -61,10 +59,8 @@ Once e have found $\bf{w}_{ML}$ we can apply it to the test set, via $y(\bf{x},\
 \]
 
 <<test>>=
-design1Test<-as.matrix(cbind(seq(1,1,length.out=nrow(selection1Test)),
-                         selection1Test))
-design2Test<-as.matrix(cbind(seq(1,1,length.out=length(selection2Test)),
-                         selection2Test))
+design1Test<-as.matrix(cbind(1,selection1Test))
+design2Test<-as.matrix(cbind(1,selection2Test))
 y1<-t(wML1)%*%t(design1Test)
 y2<-t(wML2)%*%t(design2Test)
 RMS1<-sqrt(sum((targetTest-y1)^2)/length(targetTest))
@@ -85,7 +81,7 @@ print(RMS2Train)
 For posterity, we have also calculated the error on the training set. For the two models, we get RMS of 4.52, and 4.81. The fact that the using the train error is not smaller than the test error, likely points to the fact that we are not over-fitting.
 
 \subsection{Maximum a posteriori Solution}
-In order to evaluat how different values of $\alpha$ influence our prediction, we vary $\alpha$ from 0.1 to 10. We keep $\beta=1$. constant
+In order to evaluate how different values of $\alpha$ influence our prediction, we vary $\alpha$ from 0.1 to 10. We keep $\beta=1$. constant
 <<posterior>>=
 Sn<-function(alpha,beta=1,Phi){
   tmp<-beta*t(Phi)%*%Phi
@@ -142,7 +138,7 @@ partimat(as.factor(V3)~.,data=KC.train,method="lda")
 Fucking K-nearest neighbour. Implementing this seems easy enough: http://www.lkozma.net/knn2.pdf
 http://www.scholarpedia.org/article/K-nearest_neighbor
 <<KNN>>=
-knn<-function(metric,train,test,k){
+knn<-function(test,metric,train,k){
   
   if (metric=='euclidian'){
     distance<-function(x,y){
@@ -153,8 +149,6 @@ knn<-function(metric,train,test,k){
   if (metric=='alternative'){
     distance<-function(x,y){
       M=matrix(c(100,0,0,1),2,2)
-      x<-as.vector(x)
-      y<-as.vector(c(y$V1,y$V2))
       return(norm(M%*%x-M%*%y)) #f'real?
     }
   }
@@ -163,7 +157,7 @@ knn<-function(metric,train,test,k){
   class<-vector()
   i=1
   while(i<=nrow(trainMat)) {
-    d<-append(d,(distance(x=trainMat[i,],y=test[,c(1,2)])))
+    d<-append(d,(distance(x=trainMat[i,],y=test[c(1,2)])))
     class<-append(class,train[i,]$V3)
     i=i+1
   }
@@ -178,8 +172,28 @@ knn<-function(metric,train,test,k){
   }
   
 }
-knn(metric='euclidian',train=KA.train,test=KA.test[9,],k=3)
-knn(metric='alternative',train=KA.train,test=KA.test[9,],k=3)
+knn(test=KA.test[9,],metric='euclidian',train=KA.train,k=3)
+knn(test=KA.test[9,],metric='alternative',train=KA.train,k=3)
+
+knnAeuclidian<-apply(X=KA.test,MARGIN=1,FUN=knn,metric='euclidian',train=KA.train,k=3)
+length(which(knnAeuclidian==KA.test[,3]))/length(KA.test[,3])
+knnAalternative<-apply(X=KA.test,MARGIN=1,FUN=knn,metric='alternative',train=KA.train,k=3)
+length(which(knnAalternative==KA.test[,3]))/length(KA.test[,3])
+
+
+
+
+knnBeuclidian<-apply(X=KB.test,MARGIN=1,FUN=knn,metric='euclidian',train=KB.train,k=3)
+length(which(knnBeuclidian==KB.test[,3]))/length(KB.test[,3])
+knnBalternative<-apply(X=KB.test,MARGIN=1,FUN=knn,metric='alternative',train=KB.train,k=3)
+length(which(knnBalternative==KB.test[,3]))/length(KB.test[,3])
+
+
+knnCeuclidian<-apply(X=KC.test,MARGIN=1,FUN=knn,metric='euclidian',train=KC.train,k=3)
+length(which(knnCeuclidian==KC.test[,3]))/length(KC.test[,3])
+knnCalternative<-apply(X=KC.test,MARGIN=1,FUN=knn,metric='alternative',train=KC.train,k=3)
+length(which(knnCalternative==KC.test[,3]))/length(KC.test[,3])
+
 @
 
 \end{document}

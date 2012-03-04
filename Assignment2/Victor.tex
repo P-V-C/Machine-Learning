@@ -56,8 +56,7 @@ We make a design matrix for every selection, and then find $\bf{w}_{\text{ML}}$ 
 \begin{Sinput}
 > design1Train<-as.matrix(cbind(seq(1,1,length.out=nrow(selection1Train)),
 +                          selection1Train))
-> design2Train<-as.matrix(cbind(seq(1,1,length.out=length(selection2Train)),
-+                          selection2Train))
+> design2Train<-as.matrix(cbind(1,selection2Train))
 > wML1<-ginv(design1Train)%*%targetTrain
 > wML2<-ginv(design2Train)%*%targetTrain
 \end{Sinput}
@@ -79,13 +78,13 @@ Once e have found $\bf{w}_{ML}$ we can apply it to the test set, via $y(\bf{x},\
 > print(RMS1)
 \end{Sinput}
 \begin{Soutput}
-[1] 5.105047
+[1] 4.515678
 \end{Soutput}
 \begin{Sinput}
 > print(RMS2)
 \end{Sinput}
 \begin{Soutput}
-[1] 5.245014
+[1] 5.279117
 \end{Soutput}
 \end{Schunk}
 Thus we get an RMS of 4.07 using the first model, and an RMS of 4.4 for the second model, showing the first model providing more accurate predictions. 
@@ -99,13 +98,13 @@ Thus we get an RMS of 4.07 using the first model, and an RMS of 4.4 for the seco
 > print(RMS1Train)
 \end{Sinput}
 \begin{Soutput}
-[1] 4.257557
+[1] 4.457727
 \end{Soutput}
 \begin{Sinput}
 > print(RMS2Train)
 \end{Sinput}
 \begin{Soutput}
-[1] 4.773962
+[1] 4.813506
 \end{Soutput}
 \end{Schunk}
 For posterity, we have also calculated the error on the training set. For the two models, we get RMS of 4.52, and 4.81. The fact that the using the train error is not smaller than the test error, likely points to the fact that we are not over-fitting.
@@ -148,9 +147,89 @@ We load the data KnollA, KnollB, and KnollC, and create 2-dimensional plots, whi
 \end{Sinput}
 \end{Schunk}
 \includegraphics{Victor-loadKnoll}
-
-
-\end{document}
-
-
-
+Some random built-in R functions.
+\begin{Schunk}
+\begin{Sinput}
+> require(MASS)
+> require(klaR)
+> covarA<-cov(cbind(KA.train$V1,KA.train$V2)) #covar for A. 
+> ldaa<-lda(as.factor(V3) ~ ., data = KA.train)
+> predA<-which(predict(ldaa,KA.test)$posterior[,2]>0.5) #indices where class==1
+> sum(KA.test$V3[predA]==1)/length(which(KA.test$V3==1)) #accuracy=98%
+\end{Sinput}
+\begin{Soutput}
+[1] 0.98
+\end{Soutput}
+\begin{Sinput}
+> partimat(as.factor(V3)~.,data=KA.train,method="lda")
+> ldab<-lda(as.factor(V3) ~ ., data = KB.train)
+> predB<-which(predict(ldab,KB.test)$posterior[,2]>0.5) #indices where class==1
+> sum(KB.test$V3[predB]==1)/length(which(KB.test$V3==1)) #accuracy=58% Hey, it's better than half.
+\end{Sinput}
+\begin{Soutput}
+[1] 0.58
+\end{Soutput}
+\begin{Sinput}
+> partimat(as.factor(V3)~.,data=KB.train,method="lda")
+> ldac<-lda(as.factor(V3) ~ ., data = KC.train)
+> predC<-which(predict(ldac,KC.test)$posterior[,2]>0.5) #indices where class==1
+> sum(KC.test$V3[predC]==1)/length(which(KC.test$V3==1)) #accuracy=98%
+\end{Sinput}
+\begin{Soutput}
+[1] 0.98
+\end{Soutput}
+\begin{Sinput}
+> sum(KC.test$V3[predC]==-1)/length(which(KC.test$V3==1)) #accuracy=98%
+\end{Sinput}
+\begin{Soutput}
+[1] 0.04
+\end{Soutput}
+\begin{Sinput}
+> partimat(as.factor(V3)~.,data=KC.train,method="lda")
+\end{Sinput}
+\end{Schunk}
+Fucking K-nearest neighbour. Implementing this seems easy enough: http://www.lkozma.net/knn2.pdf
+http://www.scholarpedia.org/article/K-nearest_neighbor
+\begin{Schunk}
+\begin{Sinput}
+> knn<-function(test,metric,train,k){
++   
++   if (metric=='euclidian'){
++     distance<-function(x,y){
++       return( sqrt((x[1]-y[1])^2+(x[2]-y[2])^2) )
++     }
++   }
++   
++   if (metric=='alternative'){
++     distance<-function(x,y){
++       M=matrix(c(100,0,0,1),2,2)
++       return(norm(M%*%x-M%*%y)) #f'real?
++     }
++   }
++   trainMat<-as.matrix(cbind(train$V1,train$V2))
++   d<-vector()
++   class<-vector()
++   i=1
++   while(i<=nrow(trainMat)) {
++     d<-append(d,(distance(x=trainMat[i,],y=test[c(1,2)])))
++     class<-append(class,train[i,]$V3)
++     i=i+1
++   }
++   map<-data.frame(cbind(d,class))
++   map<-map[order(map$d),]
++   
++   if(sum(map$class[1:k])>0){
++     return(1)
++   }
++   else{
++     return(-1)
++   }
++   
++ }
+> knn(test=KA.test[9,],metric='euclidian',train=KA.train,k=3)
+\end{Sinput}
+\begin{Soutput}
+[1] -1
+\end{Soutput}
+\begin{Sinput}
+> knn(test=KA.test[9,],metric='alternative',train=KA.train,k=3)
