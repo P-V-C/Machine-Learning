@@ -106,10 +106,14 @@ KB.train<-read.table('./Data/KnollB-train.dt')
 KC.test<-read.table('./Data/KnollC-test.dt')
 KC.train<-read.table('./Data/KnollC-train.dt')
 require(ggplot2)
-par(mfrow=c(1,3))
-print(qplot(KA.train$V1,KA.train$V2,color=as.factor(KA.train$V3)))
-print(qplot(KB.train$V1,KB.train$V2,color=as.factor(KB.train$V3)))
-print(qplot(KC.train$V1,KC.train$V2,color=as.factor(KC.train$V3)))
+
+qplot(KA.train$V1,KA.train$V2,color=as.factor(KA.train$V3))+geom_abline(intercept=ldaa$scaling[2,],slope=ldaa$scaling[1,])
+ggsave("ldaa.pdf")
+print(qplot(KB.train$V1,KB.train$V2,color=as.factor(KB.train$V3))+geom_abline(intercept=ldab$scaling[2,],slope=ldab$scaling[1,]))
+ggsave("ldab.pdf")
+print(qplot(KC.train$V1,KC.train$V2,color=as.factor(KC.train$V3))+geom_abline(intercept=ldac$scaling[2,],slope=ldac$scaling[1,]))
+ggsave("ldac.pdf")
+
 #KA.train and KC.train are very similar;
 # KA.train$V1-KC.train$V1*100 = 0
 # KA.train$V2-KC.train$V2 = 0
@@ -120,6 +124,7 @@ require(MASS)
 require(klaR)
 covarA<-cov(cbind(KA.train$V1,KA.train$V2)) #covar for A. 
 ldaa<-lda(as.factor(V3) ~ ., data = KA.train)
+
 predA<-which(predict(ldaa,KA.test)$posterior[,2]>0.5) #indices where class==1
 sum(KA.test$V3[predA]==1)/length(which(KA.test$V3==1)) #accuracy=98%
 partimat(as.factor(V3)~.,data=KA.train,method="lda")
