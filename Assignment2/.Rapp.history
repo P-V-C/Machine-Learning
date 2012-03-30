@@ -31,22 +31,136 @@ head(vowels)
 predict(vowelsLda,newdata=tmp)
 ?pmax
 ?visU
-plot(x=KC.train$V1,y=KC.train$V2)
-KA.test<-read.table('./Data/KnollA-test.dt')#
-KA.train<-read.table('./Data/KnollA-train.dt')#
-KB.test<-read.table('./Data/KnollB-test.dt')#
-KB.train<-read.table('./Data/KnollB-train.dt')#
-KC.test<-read.table('./Data/KnollC-test.dt')#
-KC.train<-read.table('./Data/KnollC-train.dt')
-setwd('~/github/StatML/Assignment2')
-KA.test<-read.table('./Data/KnollA-test.dt')#
-KA.train<-read.table('./Data/KnollA-train.dt')#
-KB.test<-read.table('./Data/KnollB-test.dt')#
-KB.train<-read.table('./Data/KnollB-train.dt')#
-KC.test<-read.table('./Data/KnollC-test.dt')#
-KC.train<-read.table('./Data/KnollC-train.dt')
-ldaa<-lda(as.factor(V3) ~ ., data = KA.train)
+version()
+version
 require(MASS)
-ldaa<-lda(as.factor(V3) ~ ., data = KA.train)
-plot(x=KC.train$V1,y=KC.train$V2)
-abline(ldaa,col="blue")
+require(ggplot2)
+setwd('/Users/veewhy/github/StatML/Assignment2')
+rm(list=ls())#
+setwd('~/github/StatML/Assignment2')#
+load('./Data/bodyfat.RData')#
+require(MASS)#
+colnames(data)<-c('density','bodyFatPercentage','Age','Weight',#
+                  'Height','Neck','Chest','Abdomen','Hip','Thigh',#
+                  'Knee','Ankle','Biceps','Forearm','Wrist')
+setwd('/Users/veewhy/github/StatML/Assignment2')
+ridx <- sample( 1:dim( data )[1], dim( data )[1] )#
+trainIdx<-ridx[1:200]#
+testIdx<-ridx[201:length( ridx )]#
+train <- data[trainIdx,]#
+test <- data[testIdx,]
+setwd('/Users/veewhy/github/StatML/Assignment2')
+selection1Train<-train[,c(4,7,8,9)]#
+selection2Train<-train[,8]#
+selection1Test<-test[,c(4,7,8,9)]#
+selection2Test<-test[,8]#
+targetTrain<-train[,2]#
+targetTest<-test[,2]#
+#
+selection1Full<-data[,c(4,7,8,9)]#
+selection2Full<-data[,8]
+selection1Full
+setwd('/Users/veewhy/github/StatML/Assignment2')
+targetFull<-data[,2]
+[1:nrow(data)]
+[1:nrow(data)]
+1:nrow(data)
+setwd('/Users/veewhy/github/StatML/Assignment2')
+selection1Full<-data[,c(4,7,8,9)]#
+selection2Full<-data[,8]#
+targetFull<-data[,2]#
+design1Full<-as.matrix(cbind(1,selection1Full))#
+design2Full<-as.matrix(cbind(1,selection2Full))#
+leave.one.out<-function(design1Train,design2Train,target){#
+    wML1<-ginv(design1Train)%*%target#
+    wML2<-ginv(design2Train)%*%target#
+    y1<-t(wML1)%*%t(design1Test)#
+    y2<-t(wML2)%*%t(design2Test)#
+    RMS1<-sqrt(sum((target-y1)^2)/length(target))#
+    RMS2<-sqrt(sum((target-y2)^2)/length(target))#
+}
+selection1Full
+selection1Full[!1]
+selection1Full[=!1]
+selection1Full[1:nrow(data)]
+selection1Full[1:nrow(data),]
+selection1Full[1:nrow(data)!=1,]
+selection1Full[1:nrow(data)!,]
+selection1Full[1:nrow(data),]
+selection1Full[1:nrow(data)!=3,]
+selection1Full[1:nrow(data)!=251,]
+targetFull[1]
+list(3,4)
+setwd('/Users/veewhy/github/StatML/Assignment2')
+leave.one.out<-function(design1Train,design2Train,target){#
+    wML1<-ginv(design1Train)%*%target#
+    wML2<-ginv(design2Train)%*%target#
+    y1<-t(wML1)%*%t(design1Test)#
+    y2<-t(wML2)%*%t(design2Test)#
+    RMS1<-sqrt(sum((target-y1)^2)/length(target))#
+    RMS2<-sqrt(sum((target-y2)^2)/length(target))#
+    return(list(rms1=RMS1,rms2=RMS2))#
+}#
+RMSD.full<-list()#
+for (i in 1:nrow(data)){#
+    append(RMSD.full,leave.one.out(design1Full[1:nrow(data)!=i,],design2Full[1:nrow(data)!=i,],targetFull[i]))#
+}
+targetTest
+y1
+setwd('/Users/veewhy/github/StatML/Assignment2')
+design1Test<-as.matrix(cbind(1,selection1Test))#
+design2Test<-as.matrix(cbind(1,selection2Test))#
+y1<-t(wML1)%*%t(design1Test)#
+y2<-t(wML2)%*%t(design2Test)#
+RMS1<-sqrt(sum((targetTest-y1)^2)/length(targetTest))#
+RMS2<-sqrt(sum((targetTest-y2)^2)/length(targetTest))
+setwd('/Users/veewhy/github/StatML/Assignment2')
+First we load the dataset, give it reasonable column names, and split it up into a training and a testing subset.#
+#
+rm(list=ls())#
+setwd('~/github/StatML/Assignment2')#
+load('./Data/bodyfat.RData')#
+require(MASS)#
+colnames(data)<-c('density','bodyFatPercentage','Age','Weight',#
+                  'Height','Neck','Chest','Abdomen','Hip','Thigh',#
+                  'Knee','Ankle','Biceps','Forearm','Wrist')#
+ridx <- sample( 1:dim( data )[1], dim( data )[1] )#
+trainIdx<-ridx[1:200]#
+testIdx<-ridx[201:length( ridx )]#
+train <- data[trainIdx,]#
+test <- data[testIdx,]#
+#
+#We attempt to predict body fat using two models. The first one is based on weight, and chest, abdomen, and hip circumferences, and the second is based solely on abdominal circumference.#
+#
+selection1Train<-train[,c(4,7,8,9)]#
+selection2Train<-train[,8]#
+selection1Test<-test[,c(4,7,8,9)]#
+selection2Test<-test[,8]#
+targetTrain<-train[,2]#
+targetTest<-test[,2]#
+#
+#We make a design matrix for every selection#
+#
+design1Train<-as.matrix(cbind(1,selection1Train))#
+design2Train<-as.matrix(cbind(1,selection2Train))#
+wML1<-ginv(design1Train)%*%targetTrain#
+wML2<-ginv(design2Train)%*%targetTrain#
+#
+#Once e have found wML we can apply it to the test set#
+design1Test<-as.matrix(cbind(1,selection1Test))#
+design2Test<-as.matrix(cbind(1,selection2Test))#
+y1<-t(wML1)%*%t(design1Test)#
+y2<-t(wML2)%*%t(design2Test)#
+RMS1<-sqrt(sum((targetTest-y1)^2)/length(targetTest))#
+RMS2<-sqrt(sum((targetTest-y2)^2)/length(targetTest))
+y1
+targetFull[i]
+setwd('/Users/veewhy/github/StatML/Assignment2')
+selection1Full<-data[,c(4,7,8,9)]#
+selection2Full<-data[,8]#
+targetFull<-data[,2]#
+design1Full<-as.matrix(cbind(1,selection1Full))#
+design2Full<-as.matrix(cbind(1,selection2Full))
+targetFull[1]
+targetFull
+train[,2]

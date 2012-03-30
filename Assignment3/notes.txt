@@ -1,0 +1,2 @@
+large c sensitive to outliers
+large c -> low bias / high variance
